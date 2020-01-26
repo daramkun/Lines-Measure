@@ -21,11 +21,13 @@ namespace LinesMeasure
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		Node currentNode;
+		Node currentNode = new Node ( "" );
 
 		public MainWindow ()
 		{
 			InitializeComponent ();
+
+			TotalLines.DataContext = currentNode;
 		}
 
 		private void ButtonBrowse_Click ( object sender, RoutedEventArgs e )

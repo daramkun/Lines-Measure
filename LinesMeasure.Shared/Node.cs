@@ -106,8 +106,16 @@ namespace LinesMeasure
 
 		private static void Sort ( Node node )
 		{
+			List<Node> emptyNode = new List<Node> ();
 			foreach ( Node n in node.SubNodes )
+			{
 				Sort ( n );
+				if ( !( n is FileNode ) && n.SubNodes.Count == 0 )
+					emptyNode.Add ( n );
+			}
+
+			foreach ( Node n in emptyNode )
+				node.SubNodes.Remove ( n );
 
 			if ( node.SubNodes.Count != 0 )
 				Quicksort.Sort ( node.SubNodes );
@@ -117,8 +125,31 @@ namespace LinesMeasure
 			".vs", ".vscode",																//< Visual Studio, Visual Studio Code
 			".idea", ".idea_modules",														//< IntelliJ
 			".git", ".svn",																	//< Source Version Control
-			"bin", "obj", "res",															//< Common Binary, Object, Resources directories
+			"bin", "obj", "res", "build",													//< Common Binary, Object, Resources directories
 		};
+
+		private static readonly string [] DefinitlyIgnoreFileExtensions = {
+			".o", ".a", ".so", ".exe", ".dll", ".lib", ".jar", ".aar", ".srcaar", ".appx",
+				".class", ".msi",															//< Executable Files
+			".zip", ".rar", ".zipx", ".gz", ".z", ".lzh", ".tar", ".br", ".alz", ".egg",
+				".pak",																		//< Archive Files or Compression Files
+			".jpg", ".jpeg", ".png", ".tif", ".tiff", ".jp2", ".hdp", ".jxr", ".gif",
+				".webp", ".raw", ".heif", ".avif", ".ai", ".psd", ".pdn", ".wdp", "bmp",
+				".dib", ".exr", ".svg", ".wmf", ".vml", ".ico", ".cur", ".pcx", ".tga",
+				".dds", ".astc", ".ktx", ".pkm",											//< Image Files
+			".ogg", ".opus", ".mp3", ".m4a", ".mka", ".aac", ".flac", ".alac", ".wav",
+				".oga",																		//< Audio Files
+			".mp4", ".mkv", ".m4v", ".ts", ".avi", ".mov", ".swf", ".flv", ".qt", ".wmv",
+				".rm", ".rmvb", ".3gp", ".amv", ".svi", ".nsv", ".asf", ".m4p", ".mpg",
+				".mpeg", ".m2v", ".webm", ".ogv",											//< Video Files
+			".doc", ".ppt", ".xls", ".docx", ".pptx", ".xlsx", ".odt", ".pdf", ".sxw",
+				".sxc", ".sxd", ".sxi", ".sxm", ".sxg", ".stw", ".epub", ".hwp",			//< Document Files
+			".sha1", ".md5", ".sha2",														//< Hash Files
+			".ttf", ".otf",																	//< Font Files
+			"", ".meta", ".info", ".bin", ".mdb", ".pdb", ".bson", ".pom", ".assets",
+				".anim", ".controller", ".unity", ".resource", ".prefab",					//< etc
+		};
+
 		public static Node FilesToNode ( IEnumerable<string> pathes )
 		{
 			SpinLock spinLock = new SpinLock ();
@@ -155,6 +186,12 @@ namespace LinesMeasure
 							? new FileNode ( s, path )
 							: new Node ( s );
 						n.ParentNode = root;
+
+						if ( n is FileNode && DefinitlyIgnoreFileExtensions.Contains ( Path.GetExtension ( path ).ToLower () ) )
+						{
+							spinLock.Exit ();
+							continue;
+						}
 
 						root.SubNodes.Add ( n );
 						root = n;
@@ -197,7 +234,7 @@ namespace LinesMeasure
 			".pl",																			//< Perl
 			".go",																			//< Go
 			".rb", ".rhtml", ".erb", ".rjs",												//< Ruby
-			".xml",																			//< XML
+			//".xml", ".json", ".yml", ".yaml", ".cson",										//< etc Markup Languages
 			".coffee", "._coffee", ".cake", ".cjsx", ".iced",								//< CoffeeScript
 			".erl", ".yaws",																//< Erlang
 			".bash", ".sh", ".zsh", ".ps", ".ps1", ".bat", ".csh",							//< Shell Scripts
@@ -251,8 +288,9 @@ namespace LinesMeasure
 			: base ( name )
 		{
 			FullPath = path;
-			string ext = Path.GetExtension ( FullPath );
-			if ( SourceCodeExtensions.Contains ( ext ) && Path.GetFileName ( FullPath ) != "AssemblyInfo.cs" )
+			string ext = Path.GetExtension ( FullPath ).ToLower ();
+			var filename = Path.GetFileName ( FullPath );
+			if ( SourceCodeExtensions.Contains ( ext ) && ( filename != "AssemblyInfo.cs" && filename != "Resources.Designer.cs" ) )
 			{
 				try
 				{

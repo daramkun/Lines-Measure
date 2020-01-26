@@ -11,33 +11,26 @@
 	<Window.Resources>
 		<conv:ToIconConverter x:Key="toIconConverter" />
 		<conv:TreeViewNameConverter x:Key="treeViewNameConverter" />
+		<conv:LinesConverter x:Key="linesConverter" />
 	</Window.Resources>
 	
 	<Grid Margin="8">
 		<Grid.RowDefinitions>
-			<RowDefinition Height="24" />
-			<RowDefinition Height="24" />
+			<RowDefinition Height="28" />
 			<RowDefinition />
 		</Grid.RowDefinitions>
 
-		<Grid Grid.Row="0">
+		<Grid Grid.Row="0" VerticalAlignment="Top">
 			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="64" />
 				<ColumnDefinition />
 				<ColumnDefinition Width="96" />
 			</Grid.ColumnDefinitions>
 
-			<TextBlock x:Uid="PathLabel" Grid.Column="0" Text="Path: " HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,8,0" />
-			<TextBox x:Name="MeasurePath" Grid.Column="1" Margin="0,0,8,0" IsReadOnly="True" />
-			<Button x:Uid="BrowseButton" Grid.Column="2" Content="Browse..." Width="96" Click="ButtonBrowse_Click" />
+			<TextBox x:Name="MeasurePath" Grid.Column="0" Margin="0,0,8,0" IsReadOnly="True" />
+			<Button x:Uid="BrowseButton" Grid.Column="1" Content="Browse..." Width="96" Click="ButtonBrowse_Click" />
 		</Grid>
 
-		<StackPanel Grid.Row="1" VerticalAlignment="Center" Orientation="Horizontal">
-			<TextBlock x:Uid="TotalLinesLabel" Text="Selected file's Total Lines: " Margin="0,0,8,0" />
-			<TextBlock x:Name="TotalLines" Text="{Binding Path=Lines, StringFormat={}{0:#,#}}" />
-		</StackPanel>
-
-		<TreeView Grid.Row="2" x:Name="FilesTree" ScrollViewer.VerticalScrollBarVisibility="Visible">
+		<TreeView Grid.Row="1" x:Name="FilesTree" ScrollViewer.VerticalScrollBarVisibility="Visible">
 			<TreeView.ItemTemplate>
 				<HierarchicalDataTemplate ItemsSource="{Binding SubNodes}">
 					<StackPanel Orientation="Horizontal" Margin="2">
@@ -47,11 +40,15 @@
 					</StackPanel>
 				</HierarchicalDataTemplate>
 			</TreeView.ItemTemplate>
-			<!--<TreeView.ItemContainerStyle>
+			<TreeView.ItemContainerStyle>
 				<Style TargetType="{x:Type TreeViewItem}">
 					<Setter Property="IsExpanded" Value="True" />
 				</Style>
-			</TreeView.ItemContainerStyle>-->
+			</TreeView.ItemContainerStyle>
 		</TreeView>
+
+		<TextBlock Grid.Row="1" x:Name="TotalLines" Text="{Binding Path=Lines, Converter={StaticResource linesConverter}}" FontWeight="Bold"
+				   Focusable="False" IsHitTestVisible="False" VerticalAlignment="Top" HorizontalAlignment="Right"
+				   FontSize="48" Margin="0,8,32,0" TextAlignment="Right" />
 	</Grid>
 </Window>
