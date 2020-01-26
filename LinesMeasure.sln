@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29709.97
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "LinesMeasure.Shared", "LinesMeasure.Shared\LinesMeasure.Shared.shproj", "{260E7679-AEB6-45D7-8661-476588828D19}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinesMeasure.Windows", "LinesMeasure.Windows\LinesMeasure.Windows.csproj", "{AF94C7AD-8321-4545-BAF1-5E1F17299B28}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Daramee.Winston.Shared", "..\Winston\Daramee.Winston.Shared\Daramee.Winston.Shared.shproj", "{07D3172F-FF1F-4E6F-AEBE-3E725904B2A7}"
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\..\GitHub\Winston\Daramee.Winston.Shared\Daramee.Winston.Shared.projitems*{07d3172f-ff1f-4e6f-aebe-3e725904b2a7}*SharedItemsImports = 13
+		LinesMeasure.Shared\LinesMeasure.Shared.projitems*{260e7679-aeb6-45d7-8661-476588828d19}*SharedItemsImports = 13
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AF94C7AD-8321-4545-BAF1-5E1F17299B28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF94C7AD-8321-4545-BAF1-5E1F17299B28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF94C7AD-8321-4545-BAF1-5E1F17299B28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF94C7AD-8321-4545-BAF1-5E1F17299B28}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7C00AB06-D8D2-4B28-8DA2-52984D790326}
+	EndGlobalSection
+EndGlobal

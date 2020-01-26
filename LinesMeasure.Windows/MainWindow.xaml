@@ -1,0 +1,57 @@
+﻿<Window x:Class="LinesMeasure.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LinesMeasure"
+		xmlns:conv="clr-namespace:LinesMeasure.Converters"
+        mc:Ignorable="d"
+		Icon="Resources/ProgramIcon.ico"
+        Title="Lines Measure" Height="600" Width="800">
+	<Window.Resources>
+		<conv:ToIconConverter x:Key="toIconConverter" />
+		<conv:TreeViewNameConverter x:Key="treeViewNameConverter" />
+	</Window.Resources>
+	
+	<Grid Margin="8">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="24" />
+			<RowDefinition Height="24" />
+			<RowDefinition />
+		</Grid.RowDefinitions>
+
+		<Grid Grid.Row="0">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="64" />
+				<ColumnDefinition />
+				<ColumnDefinition Width="96" />
+			</Grid.ColumnDefinitions>
+
+			<TextBlock Grid.Column="0" Text="Path: " HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,8,0" />
+			<TextBox x:Name="MeasurePath" Grid.Column="1" Margin="0,0,8,0" IsReadOnly="True" />
+			<Button Grid.Column="2" Content="Browse..." Width="96" Click="ButtonBrowse_Click" />
+		</Grid>
+
+		<StackPanel Grid.Row="1" VerticalAlignment="Center" Orientation="Horizontal">
+			<TextBlock Text="Total Lines from selected files: " Margin="0,0,8,0" />
+			<TextBlock x:Name="TotalLines" Text="{Binding Path=Lines, StringFormat={}{0:#,#}}" />
+		</StackPanel>
+
+		<TreeView Grid.Row="2" x:Name="FilesTree" ScrollViewer.VerticalScrollBarVisibility="Visible">
+			<TreeView.ItemTemplate>
+				<HierarchicalDataTemplate ItemsSource="{Binding SubNodes}">
+					<StackPanel Orientation="Horizontal" Margin="2">
+						<CheckBox IsChecked="{Binding IsChecked}" Margin="0,0,4,0" Focusable="False" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked" />
+						<Image Source="{Binding Converter={StaticResource toIconConverter}}" Margin="0,0,4,0" Width="16" Height="16" />
+						<TextBlock Text="{Binding Converter={StaticResource treeViewNameConverter}}" VerticalAlignment="Center" />
+					</StackPanel>
+				</HierarchicalDataTemplate>
+			</TreeView.ItemTemplate>
+			<!--<TreeView.ItemContainerStyle>
+				<Style TargetType="{x:Type TreeViewItem}">
+					<Setter Property="IsExpanded" Value="True" />
+				</Style>
+			</TreeView.ItemContainerStyle>-->
+		</TreeView>
+	</Grid>
+</Window>

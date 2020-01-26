@@ -1,0 +1,50 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <RootNamespace>LinesMeasure</RootNamespace>
+    <ApplicationIcon>Resources\ProgramIcon.ico</ApplicationIcon>
+    <PackageId>me.daram.LinesMeasure</PackageId>
+    <Authors>Jin Jae-yeon</Authors>
+    <Company>DARAM WORLD</Company>
+    <Product>Lines Measure</Product>
+    <Description>Program Source Code Lines counter</Description>
+    <Copyright>Copyright ⓒ 2020 Jin Jae-yeon</Copyright>
+    <PackageLicenseExpression>https://github.com/daramkun/Lines-Measure/blob/master/LICENSE</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/daramkun/Lines-Measure</PackageProjectUrl>
+    <PackageIcon>ProgramIcon.png</PackageIcon>
+    <PackageIconUrl />
+    <RepositoryUrl>https://github.com/daramkun/Lines-Measure</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <ApplicationManifest>LinesMeasure.manifest</ApplicationManifest>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;WPF</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;WPF</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\ProgramIcon.ico" />
+    <None Include="Resources\ProgramIcon.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\ProgramIcon.ico" />
+  </ItemGroup>
+
+  <Import Project="..\LinesMeasure.Shared\LinesMeasure.Shared.projitems" Label="Shared" />
+
+  <Import Project="..\..\..\GitHub\Winston\Daramee.Winston.Shared\Daramee.Winston.Shared.projitems" Label="Shared" />
+
+</Project>
