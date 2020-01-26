@@ -27,13 +27,13 @@
 				<ColumnDefinition Width="96" />
 			</Grid.ColumnDefinitions>
 
-			<TextBlock Grid.Column="0" Text="Path: " HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,8,0" />
+			<TextBlock x:Uid="PathLabel" Grid.Column="0" Text="Path: " HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,8,0" />
 			<TextBox x:Name="MeasurePath" Grid.Column="1" Margin="0,0,8,0" IsReadOnly="True" />
-			<Button Grid.Column="2" Content="Browse..." Width="96" Click="ButtonBrowse_Click" />
+			<Button x:Uid="BrowseButton" Grid.Column="2" Content="Browse..." Width="96" Click="ButtonBrowse_Click" />
 		</Grid>
 
 		<StackPanel Grid.Row="1" VerticalAlignment="Center" Orientation="Horizontal">
-			<TextBlock Text="Total Lines from selected files: " Margin="0,0,8,0" />
+			<TextBlock x:Uid="TotalLinesLabel" Text="Selected file's Total Lines: " Margin="0,0,8,0" />
 			<TextBlock x:Name="TotalLines" Text="{Binding Path=Lines, StringFormat={}{0:#,#}}" />
 		</StackPanel>
 
@@ -43,7 +43,7 @@
 					<StackPanel Orientation="Horizontal" Margin="2">
 						<CheckBox IsChecked="{Binding IsChecked}" Margin="0,0,4,0" Focusable="False" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked" />
 						<Image Source="{Binding Converter={StaticResource toIconConverter}}" Margin="0,0,4,0" Width="16" Height="16" />
-						<TextBlock Text="{Binding Converter={StaticResource treeViewNameConverter}}" VerticalAlignment="Center" />
+						<TextBlock Text="{Binding Path=Self, Converter={StaticResource treeViewNameConverter}}" VerticalAlignment="Center" />
 					</StackPanel>
 				</HierarchicalDataTemplate>
 			</TreeView.ItemTemplate>

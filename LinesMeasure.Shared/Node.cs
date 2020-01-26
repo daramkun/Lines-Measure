@@ -18,6 +18,7 @@ namespace LinesMeasure
 		protected void PC ( string name ) { PropertyChanged?.Invoke ( this, new PropertyChangedEventArgs ( name ) ); }
 
 		public string Name { get; private set; }
+		public Node Self => this;
 		public Node ParentNode { get; private set; }
 		public IList<Node> SubNodes { get; private set; } = new ObservableCollection<Node> ();
 		public virtual bool? IsChecked
@@ -230,6 +231,14 @@ namespace LinesMeasure
 			set
 			{
 				isChecked = value;
+				if ( value == true && lines == 0 )
+				{
+					if ( FileLineCountHelper.IsText ( FullPath, 4096 ) )
+					{
+						lines = FileLineCountHelper.GetFileLineCount ( FullPath );
+						PC ( nameof ( Self ) );
+					}
+				}
 				PC ( nameof ( IsChecked ) );
 				SetIsCheckedParent ();
 				SetLinesParent ();

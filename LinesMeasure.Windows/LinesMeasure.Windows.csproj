@@ -19,6 +19,7 @@
     <RepositoryUrl>https://github.com/daramkun/Lines-Measure</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <ApplicationManifest>LinesMeasure.manifest</ApplicationManifest>
+    <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
