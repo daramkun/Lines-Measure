@@ -126,6 +126,7 @@ namespace LinesMeasure
 			".idea", ".idea_modules",														//< IntelliJ
 			".git", ".svn",																	//< Source Version Control
 			"bin", "obj", "res", "build",													//< Common Binary, Object, Resources directories
+			"cmakefiles",																	//< CMake
 		};
 
 		private static readonly string [] DefinitlyIgnoreFileExtensions = {

@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -26,21 +28,53 @@ namespace LinesMeasure
 		public MainWindow ()
 		{
 			InitializeComponent ();
+			if ( !Environment.Is64BitProcess )
+				Title += " (32-bit)";
 
 			TotalLines.DataContext = currentNode;
 		}
 
-		private void ButtonBrowse_Click ( object sender, RoutedEventArgs e )
+		private async void ButtonBrowse_Click ( object sender, RoutedEventArgs e )
 		{
 			Daramee.Winston.Dialogs.OpenFolderDialog ofd = new Daramee.Winston.Dialogs.OpenFolderDialog ();
 			ofd.FileName = MeasurePath.Text;
 			if ( ofd.ShowDialog () == false )
 				return;
 
-			var fileEnums = FilesEnumerator.EnumerateFiles ( ofd.FileName, "*", false );
-			currentNode = Node.FilesToNode ( fileEnums );
-			FilesTree.ItemsSource = new Node [] { currentNode };
-			TotalLines.DataContext = currentNode;
+			( sender as Button ).IsEnabled = FilesTree.IsEnabled = false;
+			Indicator.Visibility = Visibility.Visible;
+
+			GCLatencyMode gcOldMode = GCSettings.LatencyMode;
+			RuntimeHelpers.PrepareConstrainedRegions ();
+
+			try
+			{
+				GCSettings.LatencyMode = GCLatencyMode.SustainedLowLatency;
+
+				await Task.Run ( () =>
+				{
+					var fileEnums = FilesEnumerator.EnumerateFiles ( ofd.FileName, "*", false );
+					currentNode = Node.FilesToNode ( fileEnums );
+
+					Dispatcher.BeginInvoke ( new Action ( () =>
+					{
+						GC.TryStartNoGCRegion ( Environment.Is64BitProcess ? ( 15 * 1024 * 1024 ) : ( 256 * 1024 * 1024 ) );
+						
+						FilesTree.ItemsSource = new Node [] { currentNode };
+						TotalLines.DataContext = currentNode;
+
+						if ( GCSettings.LatencyMode == GCLatencyMode.NoGCRegion )
+							GC.EndNoGCRegion ();
+					} ) );
+				} );
+			}
+			finally
+			{
+				GCSettings.LatencyMode = gcOldMode;
+			}
+
+			Indicator.Visibility = Visibility.Hidden;
+			( sender as Button ).IsEnabled = FilesTree.IsEnabled = true;
 
 			MeasurePath.Text = ofd.FileName;
 		}

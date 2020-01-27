@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LinesMeasure"
 		xmlns:conv="clr-namespace:LinesMeasure.Converters"
-        mc:Ignorable="d"
+		mc:Ignorable="d"
 		Icon="Resources/ProgramIcon.ico"
         Title="Lines Measure" Height="600" Width="800">
 	<Window.Resources>
@@ -13,42 +13,67 @@
 		<conv:TreeViewNameConverter x:Key="treeViewNameConverter" />
 		<conv:LinesConverter x:Key="linesConverter" />
 	</Window.Resources>
-	
-	<Grid Margin="8">
-		<Grid.RowDefinitions>
-			<RowDefinition Height="28" />
-			<RowDefinition />
-		</Grid.RowDefinitions>
 
-		<Grid Grid.Row="0" VerticalAlignment="Top">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition />
-				<ColumnDefinition Width="96" />
-			</Grid.ColumnDefinitions>
+	<Grid>
+		<Grid Margin="8">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="28" />
+				<RowDefinition />
+			</Grid.RowDefinitions>
 
-			<TextBox x:Name="MeasurePath" Grid.Column="0" Margin="0,0,8,0" IsReadOnly="True" />
-			<Button x:Uid="BrowseButton" Grid.Column="1" Content="Browse..." Width="96" Click="ButtonBrowse_Click" />
-		</Grid>
+			<Grid Grid.Row="0" VerticalAlignment="Top">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition />
+					<ColumnDefinition Width="96" />
+				</Grid.ColumnDefinitions>
 
-		<TreeView Grid.Row="1" x:Name="FilesTree" ScrollViewer.VerticalScrollBarVisibility="Visible">
-			<TreeView.ItemTemplate>
-				<HierarchicalDataTemplate ItemsSource="{Binding SubNodes}">
-					<StackPanel Orientation="Horizontal" Margin="2">
-						<CheckBox IsChecked="{Binding IsChecked}" Margin="0,0,4,0" Focusable="False" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked" />
-						<Image Source="{Binding Converter={StaticResource toIconConverter}}" Margin="0,0,4,0" Width="16" Height="16" />
-						<TextBlock Text="{Binding Path=Self, Converter={StaticResource treeViewNameConverter}}" VerticalAlignment="Center" />
-					</StackPanel>
-				</HierarchicalDataTemplate>
-			</TreeView.ItemTemplate>
-			<TreeView.ItemContainerStyle>
-				<Style TargetType="{x:Type TreeViewItem}">
-					<Setter Property="IsExpanded" Value="True" />
-				</Style>
-			</TreeView.ItemContainerStyle>
-		</TreeView>
+				<TextBox x:Name="MeasurePath" Grid.Column="0" Margin="0,0,8,0" IsReadOnly="True" />
+				<Button x:Uid="BrowseButton" Grid.Column="1" Content="Browse..." Width="96" Click="ButtonBrowse_Click" />
+			</Grid>
 
-		<TextBlock Grid.Row="1" x:Name="TotalLines" Text="{Binding Path=Lines, Converter={StaticResource linesConverter}}" FontWeight="Bold"
+			<TreeView Grid.Row="1" x:Name="FilesTree" ScrollViewer.VerticalScrollBarVisibility="Visible">
+				<TreeView.ItemTemplate>
+					<HierarchicalDataTemplate ItemsSource="{Binding SubNodes}">
+						<StackPanel Orientation="Horizontal" Margin="2">
+							<CheckBox IsChecked="{Binding IsChecked}" Margin="0,0,4,0" Focusable="False" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked" />
+							<Image Source="{Binding Converter={StaticResource toIconConverter}}" Margin="0,0,4,0" Width="16" Height="16" />
+							<TextBlock Text="{Binding Path=Self, Converter={StaticResource treeViewNameConverter}}" VerticalAlignment="Center" />
+						</StackPanel>
+					</HierarchicalDataTemplate>
+				</TreeView.ItemTemplate>
+				<TreeView.ItemContainerStyle>
+					<Style TargetType="{x:Type TreeViewItem}">
+						<Setter Property="IsExpanded" Value="True" />
+					</Style>
+				</TreeView.ItemContainerStyle>
+			</TreeView>
+
+			<TextBlock Grid.Row="1" x:Name="TotalLines" Text="{Binding Path=Lines, Converter={StaticResource linesConverter}}" FontWeight="Bold"
 				   Focusable="False" IsHitTestVisible="False" VerticalAlignment="Top" HorizontalAlignment="Right"
 				   FontSize="48" Margin="0,8,32,0" TextAlignment="Right" />
+		</Grid>
+
+		<Grid x:Name="Indicator" Background="#88dddddd" Visibility="Hidden">
+			<StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+				<Path Data="M15.9,28C17.000005,28 17.900001,28.899994 17.900001,30 17.900001,31.100006 17.000005,32 15.9,32 14.799993,32 13.899999,31.100006 13.899999,30 13.899999,28.899994 14.799993,28 15.9,28z M22.69999,26.5C23.799997,26.5 24.69999,27.399994 24.69999,28.5 24.69999,29.600006 23.799997,30.5 22.69999,30.5 21.599982,30.5 20.699989,29.600006 20.699989,28.5 20.699989,27.399994 21.599982,26.5 22.69999,26.5z M9.000003,26C10.199985,26 11.199986,27 11.199986,28.199982 11.199986,29.399994 10.199985,30.399994 9.000003,30.399994 7.7999904,30.399994 6.7999899,29.399994 6.7999899,28.199982 6.6999838,27 7.6999843,26 9.000003,26z M27.599984,21.699982C28.500011,21.699982 29.299998,22.399994 29.299998,23.399994 29.299998,24.299988 28.599986,25.100006 27.599984,25.100006 26.69999,25.100006 25.900003,24.399994 25.900003,23.399994 25.900003,22.399994 26.69999,21.699982 27.599984,21.699982z M4.0000009,21.100006C5.1999833,21.100006 6.1999838,22.100006 6.1999838,23.299988 6.1999838,24.5 5.1999833,25.5 4.0000009,25.5 2.7999887,25.5 1.7999882,24.5 1.7999882,23.299988 1.6999821,22.100006 2.6999824,21.100006 4.0000009,21.100006z M29.599986,14.799988C30.500011,14.799988 31.299998,15.5 31.299998,16.5 31.299998,17.399994 30.599986,18.199982 29.599986,18.199982 28.699992,18.199982 27.900005,17.5 27.900005,16.5 27.900005,15.600006 28.699992,14.799988 29.599986,14.799988z M2.1999821,14.199982C3.399995,14.199982 4.3999955,15.199982 4.3999955,16.399994 4.3999955,17.600006 3.399995,18.600006 2.1999821,18.600006 1.0000002,18.600006 -1.8503488E-07,17.600006 0,16.399994 -1.8503488E-07,15.199982 1.0000002,14.199982 2.1999821,14.199982z M27.599984,8.1000061C28.400005,8.1000061 29.000011,8.6999817 29.000011,9.5 29.000011,10.299988 28.400005,10.899994 27.599984,10.899994 26.799997,10.899994 26.19999,10.299988 26.19999,9.5 26.099984,8.7999878 26.799997,8.1000061 27.599984,8.1000061z M4.0000009,7.2999878C5.1999833,7.2999878 6.1999838,8.2999878 6.1999838,9.5 6.1999838,10.699982 5.1999833,11.699982 4.0000009,11.699982 2.7999887,11.699982 1.7999882,10.699982 1.7999882,9.5 1.7999882,8.2999878 2.6999824,7.2999878 4.0000009,7.2999878z M22.69999,3.3999939C23.500009,3.3999939 24.099984,4 24.099984,4.7999878 24.099984,5.6000061 23.500009,6.1999817 22.69999,6.1999817 21.900001,6.1999817 21.299995,5.6000061 21.299995,4.7999878 21.299995,4 21.900001,3.3999939 22.69999,3.3999939z M9.000003,1.8999939C10.399998,1.8999939 11.59998,3 11.59998,4.5 11.59998,5.8999939 10.500004,7.1000061 9.000003,7.1000061 7.5999782,7.1000061 6.399996,6 6.399996,4.5 6.399996,3.1000061 7.5000026,1.8999939 9.000003,1.8999939z M15.9,0C17.400001,0 18.699989,1.1999817 18.699989,2.7999878 18.699989,4.2999878 17.500007,5.6000061 15.9,5.6000061 14.399999,5.6000061 13.099981,4.3999939 13.099981,2.7999878 13.099981,1.1999817 14.299993,0 15.9,0z"
+					  Stretch="Uniform" Fill="Black" Width="96" Height="96" Margin="0,0,0,8" RenderTransformOrigin="0.5,0.5">
+					<Path.RenderTransform>
+						<RotateTransform x:Name="noFreeze" />
+					</Path.RenderTransform>
+					<Path.Triggers>
+						<EventTrigger RoutedEvent="Loaded">
+							<BeginStoryboard>
+								<Storyboard>
+									<DoubleAnimation Storyboard.TargetProperty="(Path.RenderTransform).(RotateTransform.Angle)"
+													 To="-360" Duration="0:0:2" RepeatBehavior="Forever" />
+								</Storyboard>
+							</BeginStoryboard>
+						</EventTrigger>
+					</Path.Triggers>
+				</Path>
+
+				<TextBlock Text="Analyzing..." TextAlignment="Center" />
+			</StackPanel>
+		</Grid>
 	</Grid>
 </Window>
